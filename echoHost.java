@@ -26,14 +26,22 @@ public class echoHost {
         serverSocket = new ServerSocket(port);
         connectedClients = new ArrayList<clientConnection>();
 
-        System.out.println("Starting host on port: " + port);
+        System.out.println("[Server] Starting host on port: " + port);
 
         while (true) {
             // Accepts client socket connections and starts a thread
-            clientConnection connectingClient = new clientConnection(serverSocket.accept());
+            clientConnection connectingClient = new clientConnection(serverSocket.accept(), "Client Name");
             connectedClients.add(connectingClient);
             connectingClient.start();
-            System.out.println("New Client Connected");
+
+
+            System.out.println("[Server]" + connectingClient.getConnectionNameString() + "connected.");
+
+
+                    
+
+
+
         }
     }
 
@@ -43,12 +51,22 @@ public class echoHost {
         private PrintWriter out;
         private BufferedReader in;
 
-        public clientConnection(Socket socket) {
+        private String clientName;
+        private String prefix = "-";
+
+        private String getConnectionNameString(){
+            return clientName;
+
+        }
+
+
+        public clientConnection(Socket socket, String clientNameString) {
             clientSocket = socket;
+            clientName = clientNameString;
         }
 
         private void sendMessage(String message) {
-            out.println(message);
+            out.println(prefix+"["+clientName+"]-"+message);
         }
 
         private void broadcastMessage(String message) {
@@ -60,12 +78,15 @@ public class echoHost {
         public void run() {
 
             boolean connectionDesired = true;
+            
 
             try {
                 out = new PrintWriter(clientSocket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-                out.println("You connected to chat.");
+                //This Should be a server broadcast,
+                //Now just announce your connection
+                broadcastMessage(clientName+ " Connected");
 
                 // Communication loop
                 String inputString;
@@ -74,6 +95,13 @@ public class echoHost {
                     if ((inputString = in.readLine()) != null) {
 
                         if (inputString.contains("logout")) {
+
+                            broadcastMessage(clientName + "User D/C");
+
+
+
+
+
                             connectionDesired = false;
                             break;
                         } else {

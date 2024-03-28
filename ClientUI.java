@@ -4,21 +4,45 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import javax.swing.*;
+import java.util.*;
 
 public class ClientUI {
 
+    
+
+
+    
+
     public static void main(String[] args) throws IOException, InterruptedException {
+
+        
+
+
+        //Assigns a random ID
+        int clientID = (int)((Math.random()*100) + (Math.random()*10) +  (Math.random()));
+
+        
+        
 
         // Maybe a login Window
 
-        SimpleClient myClient = new SimpleClient();
+        //BuildLoginUI();
+
+
+
+
+
+
+
+
+        SimpleClient myClient = new SimpleClient("" + clientID);
 
         // Links the client ui with the UI
         TextArea chatArea = BuildMainPannel(myClient);
 
         // Start connection With a client Name and defining the output area for the
         // return messages.
-        myClient.StartConnection("Default Client Name", chatArea);
+        myClient.StartConnection(chatArea);
 
         // check if we can make a connection to the server
 
@@ -33,16 +57,45 @@ public class ClientUI {
         System.out.print("Exited Client UI Loop");
     }
 
-    private static JFrame BuildLoginUI() {
+    private static void BuildLoginUI() {
+
+        
 
         JFrame jFrame = new JFrame("Simple Chat Login");
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setSize(450, 300);
 
+
+        TextArea nameArea = new TextArea();
+
+       
+
+        JButton button = new JButton("Connect");
+
+        button.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                String userDeclaredName = nameArea.getText();
+
+                userDeclaredName = "";
+
+
+
+            }
+
+        });
+
         JLabel welcomeLabel = new JLabel("Welcome");
         jFrame.getContentPane().add(welcomeLabel);
         jFrame.setVisible(true);
-        return jFrame;
+
+     
+
+        
+
+
 
     }
 

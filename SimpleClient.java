@@ -16,11 +16,24 @@ public class SimpleClient {
     // Default values;
     private int defaultPort = 1177;
     private String defaultIP = "localhost";
-    private String clientName;
 
-    public void StartConnection(String Username, TextArea outputTextArea) throws IOException {
+    private String Username;
 
-        this.clientName = Username;
+    public SimpleClient(String clientName){
+
+        this.Username = clientName;
+
+
+    }
+
+
+
+    
+
+    public void StartConnection(TextArea outputTextArea) throws IOException {
+       
+
+        
 
         try {
             connectionDesired = true;
@@ -30,17 +43,22 @@ public class SimpleClient {
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             // ServerConnectionFor this client
-            myServerConnection = new ServerConnection(outputTextArea);
+            myServerConnection = new ServerConnection(Username, outputTextArea);
             myServerConnection.start();
+            
+            SendMessage(Username);
+
+
         } catch (IOException e) {
             System.out.println(e);
         }
     }
 
     public void SendMessage(String msg) throws IOException {
-        String chatString;
-        chatString = clientName + ": " + msg;
-        out.println(chatString);
+          
+
+      
+        out.println(msg);
     }
 
     public void StopConnection() throws IOException {
@@ -55,19 +73,25 @@ public class SimpleClient {
         String serverMessages;
 
         TextArea outputTextArea;
+        String clientUsername;
 
-        public ServerConnection(TextArea outputTextArea) {
+        public ServerConnection(String clientUsername, TextArea outputTextArea) {
             this.outputTextArea = outputTextArea;
+            this.clientUsername =  clientUsername;
 
         }
 
         public void run() {
 
+
+            //Maybe send client ID
+
             try {
                 while ((serverMessages = in.readLine()) != null && connectionDesired) {
+
                     // While there's messages just print them to console
 
-                    outputTextArea.append(serverMessages);
+                    outputTextArea.append("\n" + serverMessages);
 
                 }
             } catch (IOException e) {
