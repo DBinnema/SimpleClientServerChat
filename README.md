@@ -6,6 +6,7 @@
 - Send and receive messages
 ### Potential Improvements
 - Login system
+- exe
 - Chat Colors
 
 ## Server Features
