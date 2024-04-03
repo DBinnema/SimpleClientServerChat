@@ -10,5 +10,9 @@
 
 ## Server Features
 - Accept and terminate connections
-
+### Potential Improvements 
+- Chat and connection logging
+- Better connection security
+- User database
+- jar file
 
