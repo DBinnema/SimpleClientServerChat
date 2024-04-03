@@ -4,5 +4,11 @@
 ## Client Features
 - Connect with a name
 - Send and receive messages
+### Potential Improvements
+- Login system
+- Chat Colors
+
+## Server Features
+- Accept and terminate connections
 
 
